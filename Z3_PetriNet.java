@@ -17,6 +17,7 @@ public class Z3_PetriNet {
 		
 		String dirName = "examplefiles";
         File file = new File(dirName);
+        long start = System.currentTimeMillis();
         //interpreter.interpret("/vol/home/s1696149/eclipse-workspace/pdr-ic3/examplefiles/referendum-50.pnml", 0);
 		
 		try {
@@ -35,6 +36,8 @@ public class Z3_PetriNet {
     				System.out.println(e.getMessage());
     				System.out.println(e.getStackTrace());
     			}
+    			long stop = System.currentTimeMillis();
+    			System.out.println("Which took: " + (stop - start) / 1000.0 + " seconds to determine.");
                 return FileVisitResult.CONTINUE;
             }
         });       

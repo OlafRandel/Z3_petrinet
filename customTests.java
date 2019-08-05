@@ -892,11 +892,11 @@ public class customTests {
         name.setText("B");
         TranB.setName(name);
         
-        arcB1.setTarget(TranB); //the transition connects from place1
+        arcB1.setTarget(TranB); //the transition connects from place2
         arcB1.setSource(place2);
         arcB1.setId("B1");
         
-        arcB2.setTarget(place3); //to place2
+        arcB2.setTarget(place3); //to place3
         arcB2.setSource(TranB);
         arcB2.setId("B2");
         
@@ -1194,7 +1194,7 @@ public class customTests {
         arcB1.setSource(place2);
         arcB1.setId("B1");
         
-        arcB2.setTarget(place3); //to place2
+        arcB2.setTarget(place3); //to place3
         arcB2.setSource(TranB);
         arcB2.setId("B2");
         
@@ -1217,7 +1217,7 @@ public class customTests {
         arcC1.setSource(place1);
         arcC1.setId("C1");
         
-        arcC2.setTarget(place4); //to place2
+        arcC2.setTarget(place4); //to place4
         arcC2.setSource(TranC);
         arcC2.setId("C2");
         
@@ -1236,11 +1236,11 @@ public class customTests {
         name.setText("D");
         TranD.setName(name);
         
-        arcD1.setTarget(TranD); //the transition connects from place1
+        arcD1.setTarget(TranD); //the transition connects from place4
         arcD1.setSource(place4);
         arcD1.setId("D1");
         
-        arcD2.setTarget(place5); //to place2
+        arcD2.setTarget(place5); //to place5
         arcD2.setSource(TranD);
         arcD2.setId("D2");
         
@@ -1366,7 +1366,7 @@ public class customTests {
         arcA1.setSource(place1);
         arcA1.setId("A1");
         
-        arcA2.setTarget(place1); //to place2
+        arcA2.setTarget(place1); //to place1
         arcA2.setSource(TranA);
         arcA2.setId("A2");
         
@@ -1382,7 +1382,7 @@ public class customTests {
         arcA5.setSource(place3);
         arcA5.setId("A5");
         
-        arcA6.setTarget(place3); //to place2
+        arcA6.setTarget(place3); //to place3
         arcA6.setSource(TranA);
         arcA6.setId("A6");
         
@@ -1390,7 +1390,7 @@ public class customTests {
         arcA7.setSource(place4);
         arcA7.setId("A7");
         
-        arcA8.setTarget(place4); //to place2
+        arcA8.setTarget(place4); //to place4
         arcA8.setSource(TranA);
         arcA8.setId("A8");
         

@@ -404,7 +404,7 @@ public class Test {
 	 *  	I = (0000000001)
 	 *  	T : T(I) = I + 2
 	 *  	P = -(1000000000)
-	 */
+	 *
 	@org.junit.Test
 	public void test6() {
         HashMap<String, String> cfg = new HashMap<String, String>();
@@ -457,7 +457,7 @@ public class Test {
 	 *  	I = (0000000000)
 	 *  	T : T(I) = I + 2
 	 *  	P = -(1000000000)
-	 */
+	 *
 	@org.junit.Test
 	public void test7() {
         HashMap<String, String> cfg = new HashMap<String, String>();
@@ -510,7 +510,7 @@ public class Test {
 	 *  	I = (1111111110)
 	 *  	T : T(b_i) = b_{i-1} and b_{i-2}
 	 *  	P = -(0000000000)
-	 */
+	 *
 	@org.junit.Test
 	public void test8() {
         HashMap<String, String> cfg = new HashMap<String, String>();
@@ -544,7 +544,7 @@ public class Test {
         P = ctx.mkNot(P);
         System.out.println("Test8:");
         check(I, T, P, ctx);
-	}
+	}*/
 
     static Context ctx = null;
 	static BoolExpr n(BoolExpr in) {
@@ -579,7 +579,7 @@ public class Test {
 	 * 		I = (11110000)
 	 * 		T = (a,-e,-a',e')(-a,e,a',-e')(a,b,-e,-f,-a',-b',e',f')(-a,-b,e,f, a',b',-e',-f')(a,c,-e,-g,-a',-c',e',g')(-a,-c,e,g, a',c',-e',-g')(a,d,-e,-h,-a',-d',e',h')(-a,-d,e,h, a',d',-e',-h')
 	 * 		P = (00001111)
-	 *
+	 */
 	@org.junit.Test
 	public void testPetri() {
         HashMap<String, String> cfg = new HashMap<String, String>();
@@ -767,7 +767,7 @@ public class Test {
 
         System.out.println("TestPetri: solution");
         check(I, T, n(F), ctx);
-	}*/
+	}
 	
 	private static void check(BoolExpr I, BoolExpr T, BoolExpr P, Context ctx) {
 		long start = System.currentTimeMillis();

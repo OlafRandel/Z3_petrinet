@@ -38,7 +38,6 @@ public class interpretCheck {
 					BoolExpr place = ctx.mkBoolConst(n);
 					vars.put(n, place);
 					primevars.put(n, (BoolExpr)toPrime(place,ctx));
-					prereqList.put(n, false);
 					
 				     try {
 						if(p.getInitialMarking().getText() == 1){
@@ -65,11 +64,11 @@ public class interpretCheck {
 				for (Arc out : t.getOutArcs()) {
 					varsKey = out.getTarget().getId();
 					
+					prereqList.put(varsKey, false);
 					for (Arc in : t.getInArcs()) {
 						if(varsKey == in.getSource().getId()) {
-							prereqList.put(varsKey, true); //list the place as a prereq
-						} else {
-							prereqList.put(varsKey, false); //take the place off the list if it was already on from a previous iteration
+							prereqList.replace(varsKey, true); //list the place as a prereq
+							continue;
 						}
 					}
 					
@@ -85,7 +84,7 @@ public class interpretCheck {
 				
 				for (Arc in : t.getInArcs()) {
 					varsKey = in.getSource().getId();
-					
+					prereqList.putIfAbsent(varsKey, false);
 					if(prereqList.get(varsKey)) { //in case of prereq, it should be true before AND after the step
 						hulpT = ctx.mkAnd(hulpT, primevars.get(varsKey), vars.get(varsKey));
 					}else {
@@ -94,30 +93,28 @@ public class interpretCheck {
 								);
 					}
 				}
-				
 				boolean skipTheConsistencyEnforcement = false;
 				for (Entry<String, BoolExpr> plek: vars.entrySet()) { //voor elke plek
 					skipTheConsistencyEnforcement = false;
 					for (Arc out : t.getOutArcs()) {
 						if(out.getTarget().getId() == plek.getKey()) { //als de plek genoemd wordt in de transitie
-							skipTheConsistencyEnforcement = true;
+							skipTheConsistencyEnforcement = true; //dan blijft het niet hetzelfde
 							continue;
 						}
 					}
 					for (Arc in : t.getInArcs()) {
 						if(in.getSource().getId() == plek.getKey()) { //als de plek genoemd wordt in de transitie
-							skipTheConsistencyEnforcement = true;
+							skipTheConsistencyEnforcement = true; //dan blijft het niet hetzelfde
 							continue;
 						}
 					}
 					if(!skipTheConsistencyEnforcement) {
-						hulpT = ctx.mkAnd(hulpT, ctx.mkEq(plek.getValue(), primevars.get(plek.getKey())));
+						hulpT = ctx.mkAnd(hulpT, ctx.mkEq(plek.getValue(), primevars.get(plek.getKey()))); //deze plekken blijven hetzelfde
 					}
 				}
 				T = ctx.mkOr(T,hulpT); //All possible transitions are mutually exclusive possibilities in the overall transition set T
 			}
 		}
-		//System.out.println(T.toString());
 		
 		BoolExpr P = ctx.mkBool(true);
 		
@@ -125,7 +122,7 @@ public class interpretCheck {
 			//define the property of not being 1-safe
 			P = ctx.mkBool(true);
 			
-			Boolean both_in_and_and_out = false;
+			Boolean both_in_and_and_out = false; //a value for keeping track of prerequisite places
 			for (PnObject o : page.getObjects()) {
 				if (o instanceof Transition) { //for every transition:
 					Transition t = (Transition) o;
@@ -136,7 +133,7 @@ public class interpretCheck {
 						for (Arc in : t.getInArcs()) {
 							if (vars.get(out.getTarget().getId()) == vars.get(in.getSource().getId())) {
 								both_in_and_and_out = true; //given that the target isn't also a source ->
-								break;
+								continue;
 							}
 						}
 						
@@ -145,16 +142,17 @@ public class interpretCheck {
 						}
 					}
 					
-					BoolExpr h2 = ctx.mkBool(true);	
+					BoolExpr h2 = ctx.mkBool(true);
 					for (Arc in : t.getInArcs()) {
 						h2 = ctx.mkAnd(h2,vars.get(in.getSource().getId())); //-> and all of the sources making it possible are true
-						System.out.println(h2.toString());
-					}
-					System.out.println("setP");
-					P = ctx.mkAnd(P, ctx.mkOr(ctx.mkNot(h2), ctx.mkNot(hulpP)) );
+						}
+					h2 = ctx.mkOr(ctx.mkNot(h2), ctx.mkNot(hulpP));
+					P = ctx.mkAnd(P, h2 );
 				}
 			}
-			System.out.println("check");
+			//System.out.println(I.toString());
+			//System.out.println(T.toString());
+			//System.out.println(P.toString());
 			//check for 1-safety
 			return check(I, T, P, ctx);
 		}
@@ -197,8 +195,8 @@ public class interpretCheck {
 		Boolean path = false;
 		PDR mc = new PDR(I, T, P, ctx);
 		for (Interpretation interp : mc.check()) {
+			System.out.println(interp.toString());
 			path = true;
-			System.out.println(interp);
 		}
 		long stop = System.currentTimeMillis();
 		System.out.println("Time: " + (stop - start) / 1000.0);
